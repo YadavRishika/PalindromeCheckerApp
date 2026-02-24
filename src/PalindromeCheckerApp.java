@@ -22,7 +22,6 @@ interface PalindromeStrategy {
 }
 
 
-
 class StackStrategy implements PalindromeStrategy {
 
     public boolean check(String input) {

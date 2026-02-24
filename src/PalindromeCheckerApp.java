@@ -2,65 +2,59 @@ public class PalindromeCheckerApp {
 
     public static void main(String[] args) {
 
+
         String input = "level";
 
-        PalindromeStrategy strategy;
+        // Algorithm 1: Two-Pointer
+        long start1 = System.nanoTime();
+        boolean result1 = twoPointerCheck(input);
+        long end1 = System.nanoTime();
+        long time1 = end1 - start1;
 
-        strategy = new StackStrategy();
-        // strategy = new DequeStrategy();
 
-        boolean isPalindrome = strategy.check(input);
+        // Algorithm 2: Reverse Method
+        long start2 = System.nanoTime();
+        boolean result2 = reverseCheck(input);
+        long end2 = System.nanoTime();
+        long time2 = end2 - start2;
+
 
         System.out.println("Input : " + input);
-        System.out.println("Is Palindrome? : " + isPalindrome);
+
+        System.out.println("\nTwo-Pointer Method:");
+        System.out.println("Is Palindrome? : " + result1);
+        System.out.println("Execution Time : " + time1 + " ns");
+
+        System.out.println("\nReverse Method:");
+        System.out.println("Is Palindrome? : " + result2);
+        System.out.println("Execution Time : " + time2 + " ns");
     }
-}
 
+    // Two-pointer algorithm
+    public static boolean twoPointerCheck(String input) {
 
-interface PalindromeStrategy {
-    boolean check(String input);
-}
+        int start = 0;
+        int end = input.length() - 1;
 
-
-class StackStrategy implements PalindromeStrategy {
-
-    public boolean check(String input) {
-
-        java.util.Stack<Character> stack = new java.util.Stack<>();
-
-        for (char c : input.toCharArray()) {
-            stack.push(c);
-        }
-
-        for (char c : input.toCharArray()) {
-            if (c != stack.pop()) {
+        while (start < end) {
+            if (input.charAt(start) != input.charAt(end)) {
                 return false;
             }
+            start++;
+            end--;
         }
-
         return true;
     }
-}
 
+    // Reverse string algorithm
+    public static boolean reverseCheck(String input) {
 
-class DequeStrategy implements PalindromeStrategy {
+        String reversed = "";
 
-    public boolean check(String input) {
-
-        java.util.Deque<Character> deque =
-                new java.util.ArrayDeque<>();
-
-        for (char c : input.toCharArray()) {
-            deque.addLast(c);
+        for (int i = input.length() - 1; i >= 0; i--) {
+            reversed += input.charAt(i);
         }
 
-        while (deque.size() > 1) {
-            if (!deque.removeFirst()
-                    .equals(deque.removeLast())) {
-                return false;
-            }
-        }
-
-        return true;
+        return input.equals(reversed);
     }
 }
